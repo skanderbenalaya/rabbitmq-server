@@ -31,11 +31,14 @@
          emit_publisher_info_all/5,
          emit_publisher_info_local/4,
          list/1]).
+-define(STREAM_QUEUE_TYPE, rabbit_stream_queue).
 
 -include_lib("rabbit_common/include/rabbit.hrl").
 
 start(_Type, _Args) ->
     rabbit_stream_metrics:init(),
+    rabbit_global_counters:init([{protocol, stream}]),
+    rabbit_global_counters:init([{protocol, stream}, {queue_type, ?STREAM_QUEUE_TYPE}]),
     rabbit_stream_sup:start_link().
 
 host() ->

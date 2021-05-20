@@ -122,22 +122,14 @@ smoke(Config) ->
                                       ?config(queue_type, Config)}])),
     #'confirm.select_ok'{} = amqp_channel:call(Ch, #'confirm.select'{}),
     amqp_channel:register_confirm_handler(Ch, self()),
-    publish(Ch, QName, <<"msg1">>),
-    ct:pal("waiting for confirms from ~s", [QName]),
-    ok = receive
-             #'basic.ack'{}  -> ok;
-             #'basic.nack'{} -> fail
-         after 2500 ->
-                   flush(),
-                   exit(confirm_timeout)
-         end,
+    publish_and_confirm(Ch, QName, <<"msg1">>),
     DTag = basic_get(Ch, QName),
 
     basic_ack(Ch, DTag),
     basic_get_empty(Ch, QName),
 
     %% consume
-    publish(Ch, QName, <<"msg2">>),
+    publish_and_confirm(Ch, QName, <<"msg2">>),
     ConsumerTag1 = <<"ctag1">>,
     ok = subscribe(Ch, QName, ConsumerTag1),
     %% receive and ack
@@ -158,7 +150,7 @@ smoke(Config) ->
     %% consume and nack
     ConsumerTag2 = <<"ctag2">>,
     ok = subscribe(Ch, QName, ConsumerTag2),
-    publish(Ch, QName, <<"msg3">>),
+    publish_and_confirm(Ch, QName, <<"msg3">>),
     receive
         {#'basic.deliver'{delivery_tag = T,
                           redelivered  = false},
@@ -170,6 +162,17 @@ smoke(Config) ->
     end,
     %% get and ack
     basic_ack(Ch, basic_get(Ch, QName)),
+    %% global counters
+    publish_and_confirm(Ch, <<"inexistent_queue">>, <<"msg4">>),
+    #{amqp091 := ProtocolCounters} = get_global_counters(Config),
+    ?assertMatch(ProtocolCounters, #{
+        messages_confirmed_total => 4,
+        messages_received_confirm_total => 4,
+        messages_received_total => 4,
+        messages_routed_total => 3,
+        messages_unroutable_dropped_total => 1,
+        messages_unroutable_returned_total => 0
+    }),
     ok.
 
 ack_after_queue_delete(Config) ->
@@ -181,17 +184,7 @@ ack_after_queue_delete(Config) ->
                                       ?config(queue_type, Config)}])),
     #'confirm.select_ok'{} = amqp_channel:call(Ch, #'confirm.select'{}),
     amqp_channel:register_confirm_handler(Ch, self()),
-    publish(Ch, QName, <<"msg1">>),
-    ct:pal("waiting for confirms from ~s", [QName]),
-    ok = receive
-             #'basic.ack'{} -> ok;
-             #'basic.nack'{} ->
-                 ct:fail("confirm nack - expected ack")
-         after 2500 ->
-                   flush(),
-                   exit(confirm_timeout)
-         end,
-
+    publish_and_confirm(Ch, QName, <<"msg1">>),
     DTag = basic_get(Ch, QName),
 
     ChRef = erlang:monitor(process, Ch),
@@ -228,6 +221,17 @@ publish(Ch, Queue, Msg) ->
                            #'basic.publish'{routing_key = Queue},
                            #amqp_msg{props   = #'P_basic'{delivery_mode = 2},
                                      payload = Msg}).
+
+publish_and_confirm(Ch, Queue, Msg) ->
+    publish(Ch, Queue, Msg),
+    ct:pal("waiting for ~s message confirmation from ~s", [Msg, Queue]),
+    ok = receive
+             #'basic.ack'{}  -> ok;
+             #'basic.nack'{} -> fail
+         after 2500 ->
+                   flush(),
+                   exit(confirm_timeout)
+         end.
 
 basic_get(Ch, Queue) ->
     {GetOk, _} = Reply = amqp_channel:call(Ch, #'basic.get'{queue = Queue,
@@ -273,3 +277,6 @@ flush() ->
     after 0 ->
               ok
     end.
+
+get_global_counters(Config) ->
+    rabbit_ct_broker_helpers:rpc(Config, 0, rabbit_global_counters, overview, []).
