@@ -21,11 +21,11 @@ include plugins.mk
 # For example build looking_glass on Linux when targeting Docker.
 ADDITIONAL_PLUGINS ?=
 
-DEPS = rabbit_common rabbit $(PLUGINS) $(ADDITIONAL_PLUGINS)
+LOCAL_DEPS = rabbit_common rabbit $(PLUGINS) $(ADDITIONAL_PLUGINS)
 
-DEP_PLUGINS = rabbit_common/mk/rabbitmq-dist.mk \
-	      rabbit_common/mk/rabbitmq-run.mk \
-	      rabbit_common/mk/rabbitmq-tools.mk
+DEP_PLUGINS = $(PROJECT)/apps/rabbit_common/mk/rabbitmq-dist.mk \
+	      $(PROJECT)/apps/rabbit_common/mk/rabbitmq-run.mk \
+	      $(PROJECT)/apps/rabbit_common/mk/rabbitmq-tools.mk
 
 DISABLE_DISTCLEAN = 1
 
