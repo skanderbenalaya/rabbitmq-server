@@ -23,10 +23,10 @@ RABBITMQ_DIALYZER_OPTS = [
 APP_VERSION = "3.9.0"
 
 LABELS_WITH_TEST_VERSIONS = [
-    "//deps/amqp10_common:bazel_erlang_lib",
-    "//deps/rabbit_common:bazel_erlang_lib",
-    "//deps/rabbit:bazel_erlang_lib",
-    "//deps/rabbit/apps/rabbitmq_prelaunch:bazel_erlang_lib",
+    "//apps/amqp10_common:bazel_erlang_lib",
+    "//apps/rabbit_common:bazel_erlang_lib",
+    "//apps/rabbit:bazel_erlang_lib",
+    "//apps/rabbit/apps/rabbitmq_prelaunch:bazel_erlang_lib",
 ]
 
 def with_test_versions(deps):
@@ -95,7 +95,7 @@ def broker_for_integration_suites():
     rabbitmq_home(
         name = "broker-for-tests-home",
         plugins = [
-            "//deps/rabbit:bazel_erlang_lib",
+            "//apps/rabbit:bazel_erlang_lib",
             ":bazel_erlang_lib",
         ],
     )
@@ -132,13 +132,13 @@ def rabbitmq_integration_suite(
             ":rabbitmq-for-tests-run",
         ] + tools,
         runtime_deps = [
-            "//deps/rabbitmq_cli:elixir_as_bazel_erlang_lib",
-            "//deps/rabbitmq_cli:rabbitmqctl",
+            "//apps/rabbitmq_cli:elixir_as_bazel_erlang_lib",
+            "//apps/rabbitmq_cli:rabbitmqctl",
             "@rabbitmq_ct_client_helpers//:bazel_erlang_lib",
         ] + runtime_deps,
         deps = [
-            "//deps/amqp_client:bazel_erlang_lib",
-            "//deps/rabbit_common:bazel_erlang_lib",
+            "//apps/amqp_client:bazel_erlang_lib",
+            "//apps/rabbit_common:bazel_erlang_lib",
             "@rabbitmq_ct_helpers//:bazel_erlang_lib",
         ] + deps,
         **kwargs

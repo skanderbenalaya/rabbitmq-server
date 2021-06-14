@@ -23,11 +23,11 @@ EXTRA_APPS = [
 ]
 
 BUILD_DEPS = [
-    "//deps/rabbit_common:bazel_erlang_lib",
+    "//apps/rabbit_common:bazel_erlang_lib",
 ]
 
 DEPS = [
-    "//deps/amqp10_common:bazel_erlang_lib",
+    "//apps/amqp10_common:bazel_erlang_lib",
 ]
 
 rabbitmq_lib(
@@ -60,8 +60,8 @@ rabbitmq_suite(
 rabbitmq_home(
     name = "broker-for-tests-home",
     plugins = [
-        "//deps/rabbit:bazel_erlang_lib",
-        "//deps/rabbitmq_amqp1_0:bazel_erlang_lib",
+        "//apps/rabbit:bazel_erlang_lib",
+        "//apps/rabbitmq_amqp1_0:bazel_erlang_lib",
     ],
 )
 
@@ -70,7 +70,7 @@ rabbitmq_run(
     home = ":broker-for-tests-home",
 )
 
-PACKAGE = "deps/amqp10_client"
+PACKAGE = "apps/amqp10_client"
 
 rabbitmq_integration_suite(
     PACKAGE,

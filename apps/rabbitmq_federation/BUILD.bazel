@@ -23,13 +23,13 @@ APP_ENV = """[
 	  ]"""
 
 BUILD_DEPS = [
-    "//deps/rabbitmq_cli:rabbitmqctl",
+    "//apps/rabbitmq_cli:rabbitmqctl",
 ]
 
 DEPS = [
-    "//deps/amqp_client:bazel_erlang_lib",
-    "//deps/rabbit_common:bazel_erlang_lib",
-    "//deps/rabbit:bazel_erlang_lib",
+    "//apps/amqp_client:bazel_erlang_lib",
+    "//apps/rabbit_common:bazel_erlang_lib",
+    "//apps/rabbit:bazel_erlang_lib",
 ]
 
 rabbitmq_lib(
@@ -65,12 +65,12 @@ erlc(
     erlc_opts = RABBITMQ_TEST_ERLC_OPTS,
     deps = [
         ":test_bazel_erlang_lib",
-        "//deps/amqp_client:bazel_erlang_lib",
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/amqp_client:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
-PACKAGE = "deps/rabbitmq_federation"
+PACKAGE = "apps/rabbitmq_federation"
 
 rabbitmq_integration_suite(
     PACKAGE,
@@ -127,7 +127,7 @@ rabbitmq_integration_suite(
 rabbitmq_suite(
     name = "unit_SUITE",
     deps = [
-        "//deps/amqp_client:bazel_erlang_lib",
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/amqp_client:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )

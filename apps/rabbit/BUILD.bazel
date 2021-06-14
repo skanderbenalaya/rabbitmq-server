@@ -140,8 +140,8 @@ _APP_ENV = """[
 """
 
 DEPS = [
-    "//deps/amqp10_common:bazel_erlang_lib",
-    "//deps/rabbit_common:bazel_erlang_lib",
+    "//apps/amqp10_common:bazel_erlang_lib",
+    "//apps/rabbit_common:bazel_erlang_lib",
     "@ra//:bazel_erlang_lib",
     "@ranch//:bazel_erlang_lib",
     "@stdout_formatter//:bazel_erlang_lib",
@@ -149,7 +149,7 @@ DEPS = [
 ]
 
 RUNTIME_DEPS = [
-    "//deps/rabbit/apps/rabbitmq_prelaunch:bazel_erlang_lib",
+    "//apps/rabbitmq_prelaunch:bazel_erlang_lib",
     "@cuttlefish//:bazel_erlang_lib",
     "@observer_cli//:bazel_erlang_lib",
     "@osiris//:bazel_erlang_lib",
@@ -271,8 +271,8 @@ erlc(
     dest = "test",
     erlc_opts = RABBITMQ_TEST_ERLC_OPTS,
     deps = [
-        "//deps/amqp_client:bazel_erlang_lib",
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/amqp_client:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -285,8 +285,8 @@ erlc(
     dest = "test",
     erlc_opts = RABBITMQ_TEST_ERLC_OPTS,
     deps = [
-        "//deps/amqp_client:bazel_erlang_lib",
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/amqp_client:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -305,7 +305,7 @@ rabbitmq_suite(
     size = "small",
 )
 
-PACKAGE = "deps/rabbit"
+PACKAGE = "apps/rabbit"
 
 rabbitmq_integration_suite(
     PACKAGE,
@@ -537,7 +537,7 @@ rabbitmq_integration_suite(
         },
     },
     runtime_deps = [
-        "//deps/rabbit/test/feature_flags_SUITE_data/my_plugin:bazel_erlang_lib",
+        "//apps/rabbit/test/feature_flags_SUITE_data/my_plugin:bazel_erlang_lib",
     ],
 )
 
@@ -600,7 +600,7 @@ rabbitmq_suite(
         "test/mirrored_supervisor_SUITE_gs.erl",
     ],
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -608,7 +608,7 @@ rabbitmq_suite(
     name = "msg_store_SUITE",
     size = "small",
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -793,7 +793,7 @@ rabbitmq_suite(
     name = "rabbit_confirms_SUITE",
     size = "small",
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -813,7 +813,7 @@ rabbitmq_suite(
         "@ra//:bazel_erlang_lib",
     ],
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -833,7 +833,7 @@ rabbitmq_suite(
         "@ra//:bazel_erlang_lib",
     ],
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
         "@proper//:bazel_erlang_lib",
     ],
 )
@@ -856,7 +856,7 @@ rabbitmq_suite(
         "@ra//:bazel_erlang_lib",
     ],
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -877,7 +877,7 @@ rabbitmq_suite(
         "@ra//:bazel_erlang_lib",
     ],
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -885,8 +885,8 @@ rabbitmq_suite(
     name = "rabbit_msg_record_SUITE",
     size = "medium",
     deps = [
-        "//deps/amqp10_common:bazel_erlang_lib",
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/amqp10_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -1023,7 +1023,7 @@ rabbitmq_suite(
     name = "unit_amqp091_content_framing_SUITE",
     size = "small",
     deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -1051,7 +1051,7 @@ rabbitmq_suite(
     name = "unit_collections_SUITE",
     size = "small",
     runtime_deps = [
-        "//deps/rabbit_common:bazel_erlang_lib",
+        "//apps/rabbit_common:bazel_erlang_lib",
     ],
 )
 
@@ -1059,8 +1059,8 @@ rabbitmq_suite(
     name = "unit_config_value_encryption_SUITE",
     size = "medium",
     runtime_deps = [
-        "//deps/rabbit/apps/rabbitmq_prelaunch:test_bazel_erlang_lib",
-        "//deps/rabbit_common:test_bazel_erlang_lib",
+        "//apps/rabbit/apps/rabbitmq_prelaunch:test_bazel_erlang_lib",
+        "//apps/rabbit_common:test_bazel_erlang_lib",
         "@credentials_obfuscation//:bazel_erlang_lib",
     ],
 )
@@ -1120,7 +1120,7 @@ rabbitmq_suite(
     name = "unit_operator_policy_SUITE",
     size = "small",
     deps = [
-        "//deps/rabbit_common:test_bazel_erlang_lib",
+        "//apps/rabbit_common:test_bazel_erlang_lib",
     ],
 )
 
@@ -1133,7 +1133,7 @@ rabbitmq_suite(
     name = "unit_plugin_directories_SUITE",
     size = "small",
     deps = [
-        "//deps/rabbit_common:test_bazel_erlang_lib",
+        "//apps/rabbit_common:test_bazel_erlang_lib",
     ],
 )
 

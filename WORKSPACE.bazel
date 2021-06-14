@@ -47,6 +47,6 @@ http_archive(
     urls = ["https://github.com/rabbitmq/rabbitmq-ct-client-helpers/archive/master.zip"],
 )
 
-load("//deps/amqp10_client:activemq.bzl", "activemq_archive")
+load("//apps/amqp10_client:activemq.bzl", "activemq_archive")
 
 activemq_archive()
