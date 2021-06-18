@@ -162,6 +162,3 @@ fifo_machines_use_same_version(Config, Nodenames)
               rabbit_fifo, version, []))
      || Nodename <- Nodenames],
     lists:all(fun(V) -> V =:= MachineAVersion end, OtherMachinesVersions).
-
-is_mixed_versions() ->
-    not (false == os:getenv("SECONDARY_UMBRELLA")).

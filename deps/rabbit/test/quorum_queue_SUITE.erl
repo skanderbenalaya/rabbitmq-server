@@ -181,7 +181,7 @@ init_per_group(Group, Config) ->
                       cluster_size_3 -> 3;
                       cluster_size_5 -> 5
                   end,
-    IsMixed = not (false == os:getenv("SECONDARY_UMBRELLA")),
+    IsMixed = rabbit_ct_helpers:is_mixed_versions(Config),
     case ClusterSize of
         2 when IsMixed ->
             {skip, "cluster size 2 isn't mixed versions compatible"};
