@@ -164,15 +164,31 @@ smoke(Config) ->
     basic_ack(Ch, basic_get(Ch, QName)),
     %% global counters
     publish_and_confirm(Ch, <<"inexistent_queue">>, <<"msg4">>),
-    #{amqp091 := ProtocolCounters} = get_global_counters(Config),
-    ?assertMatch(ProtocolCounters, #{
-        messages_confirmed_total => 4,
-        messages_received_confirm_total => 4,
-        messages_received_total => 4,
-        messages_routed_total => 3,
-        messages_unroutable_dropped_total => 1,
-        messages_unroutable_returned_total => 0
-    }),
+    ProtocolCounters = maps:get([{protocol, amqp091}], get_global_counters(Config)),
+    ?assertEqual(#{
+                   messages_confirmed_total => 4,
+                   messages_received_confirm_total => 4,
+                   messages_received_total => 4,
+                   messages_routed_total => 3,
+                   messages_unroutable_dropped_total => 1,
+                   messages_unroutable_returned_total => 0
+                  }, ProtocolCounters),
+    QueueType = list_to_atom(
+                  "rabbit_" ++
+                  binary_to_list(?config(queue_type, Config)) ++
+                  "_queue"),
+    ProtocolQueueTypeCounters = maps:get([{protocol, amqp091}, {queue_type, QueueType}],
+                                         get_global_counters(Config)),
+    ?assertEqual(#{
+                   messages_acknowledged_total => 3,
+                   messages_delivered_consume_auto_ack_total => 0,
+                   messages_delivered_consume_manual_ack_total => 0,
+                   messages_delivered_get_auto_ack_total => 0,
+                   messages_delivered_get_manual_ack_total => 0,
+                   messages_delivered_total => 4,
+                   messages_get_empty_total => 2,
+                   messages_redelivered_total => 1
+                  }, ProtocolQueueTypeCounters),
     ok.
 
 ack_after_queue_delete(Config) ->
