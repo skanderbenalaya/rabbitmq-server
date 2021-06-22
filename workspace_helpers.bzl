@@ -239,8 +239,8 @@ erlang_lib(
     github_bazel_erlang_lib(
         name = "seshat",
         org = "rabbitmq",
-        ref = "main",
-        version = "main",
+        ref = "refs/heads/valid-prometheus-format",
+        version = "refs/heads/valid-prometheus-format",
         extra_apps = [
             "sasl",
             "crypto",
