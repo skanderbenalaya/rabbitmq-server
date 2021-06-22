@@ -1176,6 +1176,10 @@ print_banner() ->
     io:format(Logo ++
               "~n" ++
               MOTDFormat ++
+              "~n"
+              "~n  Erlang: ~ts [~ts]"
+              "~n  ~ts"        %% crypto/OpenSSL version
+              "~n"
               "~n  Doc guides: https://rabbitmq.com/documentation.html"
               "~n  Support:    https://rabbitmq.com/contact.html"
               "~n  Tutorials:  https://rabbitmq.com/getstarted.html"
@@ -1185,6 +1189,7 @@ print_banner() ->
               "~n  Config file(s): ~ts" ++ CfgFmt ++ "~n"
               "~n  Starting broker...",
               [Product, Version, ?COPYRIGHT_MESSAGE, ?INFORMATION_MESSAGE] ++
+              [rabbit_misc:otp_release(), erlang:system_info(emu_flavor), rabbit_misc:crypto_version()] ++
               MOTDArgs ++
               LogLocations ++
               CfgLocations).

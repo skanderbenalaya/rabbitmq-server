@@ -62,7 +62,7 @@
 -export([is_os_process_alive/1]).
 -export([gb_sets_difference/2]).
 -export([version/0, otp_release/0, platform_and_version/0, otp_system_version/0,
-         rabbitmq_and_erlang_versions/0, which_applications/0]).
+         rabbitmq_and_erlang_versions/0, crypto_version/0, which_applications/0]).
 -export([sequence_error/1]).
 -export([check_expiry/1]).
 -export([base64url/1]).
@@ -1227,6 +1227,11 @@ otp_release() ->
             %% or we couldn't read the file (so this is best we can do)
             erlang:system_info(otp_release)
     end.
+
+
+crypto_version() ->
+    [{CryptoLibName, _, CryptoLibVersion}] = crypto:info_lib(),
+    string:join([binary_to_list(CryptoLibName), binary_to_list(CryptoLibVersion)], ": ").
 
 platform_and_version() ->
     string:join(["Erlang/OTP", otp_release()], " ").
