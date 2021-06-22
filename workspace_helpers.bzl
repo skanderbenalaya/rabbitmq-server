@@ -240,7 +240,7 @@ erlang_lib(
         name = "seshat",
         org = "rabbitmq",
         ref = "refs/heads/valid-prometheus-format",
-        version = "refs/heads/valid-prometheus-format",
+        version = "valid-prometheus-format",
         extra_apps = [
             "sasl",
             "crypto",
